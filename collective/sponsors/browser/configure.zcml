@@ -1,0 +1,31 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="collective.sponsors">
+
+  <include package="plone.app.contentmenu" />
+
+  <!-- -*- extra stuff goes here -*- -->
+
+  <browser:page
+      for="Products.ATContentTypes.interfaces.folder.IATFolder"
+      name="sponsor_view"
+      class=".sponsorview.SponsorView"
+      template="sponsorview.pt"
+      allowed_interface=".sponsorview.ISponsorView"
+      permission="zope.Public"
+      layer="..interfaces.IExtensionInstalled"
+      />
+
+    <browser:viewlet
+      name="collective.sponsors"
+      manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
+      view="plone.app.layout.globals.interfaces.IViewView"
+      class=".viewlets.SponsorsViewlet"
+      template="sponsorsviewlet.pt"
+      for="*"
+      layer="collective.sponsors.interfaces.IExtensionInstalled"
+      permission="zope2.View"
+      />
+
+</configure>

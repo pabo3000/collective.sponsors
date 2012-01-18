@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="collective.sponsors">
+<body>
+    <div metal:fill-slot="main">
+        <tal:main-macro metal:define-macro="main"
+                        tal:define="folder view/folder;
+                                    sponsors view/sponsors;">
+
+            <h1 id="parent-fieldname-title" class="documentFirstHeading 
+                kssattr-atfieldname-title kssattr-templateId-kss_generic_macros 
+                kssattr-macro-title-field-view"
+                tal:content="folder/title">
+                    test
+                </h1>
+            <div id="content-core">
+                <div class="tileItem visualIEFloatFix"
+                     tal:repeat="sponsor sponsors">
+                    <a href="http://localhost:8080/plone/test/test"
+                       tal:attributes="href sponsor/remoteUrl">
+                        <img src="http://localhost:8080/plone/test/test/image_thumb"
+                             alt="test" 
+                             title="test" 
+                             class="tileImage"
+                             tal:attributes="src string:${sponsor/image/absolute_url}_preview;
+                                             alt sponsor/title;
+                                             title sponsor/title" />
+                    </a>
+                </div>
+            </div>
+        </tal:main-macro>
+    </div>
+</body>
+</html>

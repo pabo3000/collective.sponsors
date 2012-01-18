@@ -1,0 +1,37 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="collective.sponsors">
+
+
+  <five:registerPackage package="." initialize=".initialize" />
+  <include package="Products.CMFCore" file="permissions.zcml" />
+  <permission 
+     id="collective.sponsors.AddSponsor" 
+     title="collective.sponsors: Add Sponsor" 
+     />
+
+  <include package="plone.browserlayer" />
+
+  <!-- Include the sub-packages that use their own configure.zcml files. -->
+  <include package=".browser" />
+  <include package=".content" />
+  <include package=".portlets" />
+  
+  <!-- Register the installation GenericSetup extension profile -->
+  <genericsetup:registerProfile
+      name="default"
+      title="Sponsors"
+      directory="profiles/default"
+      description="Adds an archetype called sponsor, a sponsor view and a viewlet."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+  
+  <!-- -*- extra stuff goes here -*- -->
+
+  <include package=".browser" />
+  
+
+</configure>

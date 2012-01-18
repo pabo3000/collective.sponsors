@@ -1,0 +1,15 @@
+<!-- Here come the logos of the sponsors -->
+<ul id="sponsors">
+    <li tal:repeat="sponsor view/sponsors">
+        <a href="sponsor/remoteUrl"
+           tal:attributes="href sponsor/remoteUrl">
+            <img src="sponsor logo"
+                 alt=""
+                 title=""
+                 class="sponsor_logo"
+                 tal:attributes="src string:${sponsor/image/absolute_url}_thumb;
+                                 alt sponsor/title;
+                                 title sponsor/title" />
+        </a>
+    </li>
+</ul>
