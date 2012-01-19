@@ -39,15 +39,17 @@ class SponsorView(BrowserView):
         """
         returns a list of dicts of sponsors in this folder
         """
-        return [dict(id=sponsor.id,
-                     title=sponsor.Title(),
-                     remoteUrl=sponsor.getRemoteUrl(),
-                     image=sponsor.getImage(),
-                     url=sponsor.absolute_url()) 
-                for sponsor in self.context.listFolderContents(contentFilter=
-                                        {"portal_type" : "Sponsor",
-                                         "review_state": "published"})
-                ]
+        return sorted([dict(id=sponsor.id,
+                            title=sponsor.Title(),
+                            remoteUrl=sponsor.getRemoteUrl(),
+                            image=sponsor.getBanner(),
+                            donation=sponsor.getDonation(),
+                            url=sponsor.absolute_url()) 
+                       for sponsor in self.context.listFolderContents(contentFilter=
+                                                                      {"portal_type" : "Sponsor",
+                                                                       "review_state": "published",})
+                if not sponsor.getBanner()==''
+                ], key=lambda sponsor: sponsor['donation'])
 
     def folder(self):
         """

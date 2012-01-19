@@ -10,6 +10,12 @@ class ISponsor(Interface):
     """A person or company who donates."""
 
     # -*- schema definition goes here -*-
+    banner = schema.Bytes(
+        title=_(u"Banner"),
+        required=False,
+        description=_(u"Field description"),
+    )
+#
     donation = schema.Float(
         title=_(u"Donation"),
         required=False,

@@ -20,13 +20,28 @@ SponsorSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
 
     # -*- Your Archetypes field definitions here ... -*-
 
-    atapi.StringField(
-        'remoteUrl',
+    atapi.ImageField(
+        'banner',
         storage=atapi.AnnotationStorage(),
-        widget=atapi.StringWidget(
-            label=_(u"URL"),
-            description=_(u"Field description"),
+        allowable_content_types=('image/gif','image/jpeg','image/png'),
+        language_independent=True,
+        sizes= {'large'   : (768, 768),
+                'banner'  : (468, 468),
+                'preview' : (400, 400),
+                'mini'    : (200, 200),
+                'thumb'   : (96, 96),
+                'tile'    :  (64, 64),
+                'icon'    :  (32, 32),
+                'listing' :  (16, 16),
+               },
+        widget=atapi.ImageWidget(
+            label=_(u"Banner"),
+            description=_(u"Please upload a banner as jpg, gif or png. "
+                          u"The banner is displayed in the sponsors_view of a "
+                          u"folder or collection. The full banner size (468 * 60) "
+                          u"is recommendable."),
         ),
+        validators=('isNonEmptyFile'),
     ),
 
 
@@ -45,9 +60,20 @@ SponsorSchema = schemata.ATContentTypeSchema.copy() + atapi.Schema((
               },
         widget=atapi.ImageWidget(
             label=_(u"Partner Logo"),
-            description=_(u"Please upload the partner's logo. (jpg, gif or png)"),
+            description=_(u"Please upload the partner's logo. (jpg, gif or png)"
+                          u"It will be displayed in the site's footer."),
         ),
         validators=('isNonEmptyFile'),
+    ),
+
+
+    atapi.StringField(
+        'remoteUrl',
+        storage=atapi.AnnotationStorage(),
+        widget=atapi.StringWidget(
+            label=_(u"URL"),
+            description=_(u"Field description"),
+        ),
     ),
 
 
@@ -88,6 +114,8 @@ class Sponsor(base.ATCTContent):
     description = atapi.ATFieldProperty('description')
 
     # -*- Your ATSchema to Python Property Bridges Here ... -*-
+    banner = atapi.ATFieldProperty('banner')
+
     donation = atapi.ATFieldProperty('donation')
 
     image = atapi.ATFieldProperty('image')
@@ -105,6 +133,19 @@ class Sponsor(base.ATCTContent):
                 image = field.getScale(self)
             else:
                 scalename = name[len('image_'):]
+                if scalename in field.getAvailableSizes(self):
+                    image = field.getScale(self, scale=scalename)
+            if image is not None and not isinstance(image, basestring):
+                # image might be None or '' for empty images
+                return image
+        
+        if name.startswith('banner'):
+            field = self.getField('banner')
+            image = None
+            if name == 'banner':
+                image = field.getScale(self)
+            else:
+                scalename = name[len('banner_'):]
                 if scalename in field.getAvailableSizes(self):
                     image = field.getScale(self, scale=scalename)
             if image is not None and not isinstance(image, basestring):
